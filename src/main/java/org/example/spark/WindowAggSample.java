@@ -10,6 +10,8 @@ import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 
+import javax.xml.crypto.Data;
+
 public class WindowAggSample {
     static String sales2Url = "file:///C:\\Training\\sockgen_spark_java\\sales_2.csv";
     public static void main(String[] args) {
@@ -36,10 +38,26 @@ public class WindowAggSample {
 
 
         WindowSpec  windowSpec = Window.partitionBy("date_of_sale");
-        Dataset<Row> windowDf = sales2Df.withColumn("item_total",
+        Dataset<Row> windowedDf = sales2Df.withColumn("item_total",
                 functions.sum("total_amount").over(windowSpec));
-        windowDf.show();
+//        windowDf.show();
 
+        String partOutputUrl = "file:///C:\\Training\\spark_part_output";
+        windowedDf.write().option("header", "true").mode("Overwrite")
+                .partitionBy("date_of_sale").csv(partOutputUrl);
+        String fullOutputUrl = "file:///C:\\Training\\spark_full_output";
+        windowedDf.write().option("header", "true").mode("Overwrite")
+                .csv(fullOutputUrl);
+        Dataset<Row> queryFullWindowedDf = spark.read()
+                .option("header", "true")
+                .option("inferSchema", "true")
+                .csv(fullOutputUrl);
+        Dataset<Row> queryPartWindowedDf = spark.read()
+                .option("header", "true")
+                .option("inferSchema", "true")
+                .csv(partOutputUrl);
+        queryFullWindowedDf.filter("date_of_sale='2020-09-02'").filter("total_amount > 100").explain();
+        queryPartWindowedDf.filter("date_of_sale='2020-09-02'").filter("total_amount > 100").explain();
     }
 
     public static Dataset<Row> readSales(SparkSession spark, String filePath){
