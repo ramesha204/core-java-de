@@ -34,7 +34,7 @@ public class WindowAggSample {
         Dataset<Row> percentageSaleDf = spark.sql("select s.item_id,s.total_amount,s.date_of_sale, " +
                 " (s.total_amount*100/i.item_total) as sale_item_percentage from " +
                 "sales s join item_total i on s.date_of_sale=i.date_of_sale ");
-        percentageSaleDf.show();
+//        percentageSaleDf.show();
 
 
         WindowSpec  windowSpec = Window.partitionBy("date_of_sale");
@@ -56,6 +56,8 @@ public class WindowAggSample {
                 .option("header", "true")
                 .option("inferSchema", "true")
                 .csv(partOutputUrl);
+        System.out.println("Tesinth");
+        System.out.println( queryFullWindowedDf.take(2).toString());
         queryFullWindowedDf.filter("date_of_sale='2020-09-02'").filter("total_amount > 100").explain();
         queryPartWindowedDf.filter("date_of_sale='2020-09-02'").filter("total_amount > 100").explain();
     }
@@ -72,6 +74,7 @@ public class WindowAggSample {
                 .schema(schema)
                 .option("header", "true")
                 .csv(filePath);
+
         return productDf;
     }
 }

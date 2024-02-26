@@ -1,0 +1,4 @@
+Order ID,Order Date,Ship Mode,Segment,City,State,Country,Category,Sub-Category,Sales,Quantity,Discount,Profit,Shipping Cost,Returns
+CA-2014-AB10015140-41954,11/11/2014,First Class,Consumer,Oklahoma City,Oklahoma,United States,Technology,Phones,$221.98,2,0,$62.15,40.77,No
+IN-2014-JR162107-41675,2/5/2014,Second Class,Corporate,Wollongong,New South Wales,Australia,Furniture,Chairs,"$3,709.40",9,0.1,-$288.77,923.63,No
+IN-2014-CR127307-41929,10/17/2014,First 

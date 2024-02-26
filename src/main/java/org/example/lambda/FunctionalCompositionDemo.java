@@ -10,13 +10,15 @@ public class FunctionalCompositionDemo {
         Function<Integer, Integer> add      = (value) -> value + 3;
 
         Function<Integer, Integer> compposeMultiply = multiply.compose(add);
-//        Function<Integer, Integer> compose2 = compposeMultiply
-//                .compose(add)
-//                .compose(multiply)
-//                .compose((value) -> value * value);
+        Function<Integer, Integer> compose2 = compposeMultiply
+                .compose(add)
+                .compose(multiply)
+                .compose((value) -> value * value);
 
         Integer result1 = compposeMultiply.apply(3);
         System.out.println(result1);
+        Integer result2 =compose2.apply(2);
+        System.out.println(result2);
     }
 
     public static void andThenDemo() {
@@ -57,7 +59,7 @@ public class FunctionalCompositionDemo {
 
     public static void main(String[] args) {
         composeDemo();
-        andThenDemo();
-        predicateCompositionDemo();
+       andThenDemo();
+//        predicateCompositionDemo();
     }
 }
